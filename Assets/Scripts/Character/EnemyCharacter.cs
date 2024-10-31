@@ -1,50 +1,45 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Character.Components.Damage;
+using Character.Components.Live;
+using Character.Components.Movement;
 
-public class EnemyCharacter : Character
+namespace Character
 {
-    [SerializeField] private AiState currentState;
-
-    [SerializeField]
-    private Character targetCharacter;
-
-    private float timeBetweenAttackCounter = 0;
-
-    public override void Start()
+    public class EnemyCharacter : Character
     {
-        base.Start();
+        private StateMachine stateMachine;
+        public AIStateChase chaseState = new AIStateChase();
+        public AIStateAttack attackState = new AIStateAttack();
+        public float AttackRange = 3f;
+        public Character TargetCharacter { get; private set; }
+        public float TimeBetweenAttackCounter { get; set; }
 
-        LiveComponent = new ImmortalLiveComponent();
-
-        DamageComponent = new CharacterDamgaeComponent();
-    }
-
-    public override void Update()
-    {
-        switch (currentState)
+        public override void Start()
         {
-            case AiState.None:
-                break;
+            base.Start();
 
-            case AiState.MoveToTarget:
-                Vector3 direction = targetCharacter.transform.position - transform.position;
-                direction.Normalize();
+            LiveComponent = new ImmortalLiveComponent();
+            DamageComponent = new CharacterDamageComponent();
+            TargetCharacter = FindObjectOfType<PlayerCharacter>();
 
-                MovableComponent.Move(direction);
-                MovableComponent.Rotation(direction);
+            if (TargetCharacter == null)
+            {
+                Debug.LogError("PlayerCharacter not found. Ensure there is a PlayerCharacter in the scene.");
+                return;
+            }
 
-                if (Vector3.Distance(targetCharacter.transform.position, transform.position) < 3
-                    && timeBetweenAttackCounter <= 0) 
-                {
-                    DamageComponent.MakeDamage(targetCharacter);
-                    timeBetweenAttackCounter = characterData.TimeBetweenAttacks;
-                }
+            stateMachine = new StateMachine();
+            stateMachine.Initialize(chaseState); // ”станавливаем начальное состо€ние преследовани€
+        }
 
-                if (timeBetweenAttackCounter > 0)
-                    timeBetweenAttackCounter -= Time.deltaTime;
+        public override void Update()
+        {
+            stateMachine.Update(this);
+        }
 
-                break;
+        public void ChangeState(AIState newState)
+        {
+            stateMachine.ChangeState(newState, this);
         }
     }
 }

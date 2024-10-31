@@ -1,14 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterDamgaeComponent : IDamageComponent
+namespace Character.Components.Damage
 {
-    public float Damage => 10;
-
-    public void MakeDamage(Character characterTarget)
+    public class CharacterDamageComponent : IDamageComponent
     {
-        if (characterTarget.LiveComponent != null) 
-            characterTarget.LiveComponent.SetDamage(Damage);
+        public float Damage => 10;
+
+        public void MakeDamage(Character characterTarget)
+        {
+            if (characterTarget.LiveComponent != null)
+                characterTarget.LiveComponent.SetDamage(Damage);
+        }
     }
 }

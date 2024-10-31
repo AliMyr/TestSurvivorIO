@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface ILiveComponent
+namespace Character.Components.Live
 {
-    float MaxHealth { get; set; }
+    public interface ILiveComponent
+    {
+        float MaxHealth { get; set; }
+        float Health { get; set; }
 
-    float Health { get; set; }
-
-    public void SetDamage(float damage);
+        void SetDamage(float damage);
+    }
 }

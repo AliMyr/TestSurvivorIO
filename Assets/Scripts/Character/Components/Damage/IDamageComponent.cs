@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface IDamageComponent
+namespace Character.Components.Damage
 {
-    float Damage {  get; }
+    public interface IDamageComponent
+    {
+        float Damage { get; }
 
-    void MakeDamage(Character characterTarget);
+        void MakeDamage(Character characterTarget);
+    }
 }

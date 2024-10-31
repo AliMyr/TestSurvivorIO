@@ -1,47 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterLiveComponent : ILiveComponent
+namespace Character.Components.Live
 {
-    private float currentHealth;
-
-    public float MaxHealth 
+    public class CharacterLiveComponent : ILiveComponent
     {
-        get => 50; 
-        set { return; } 
-    }
+        private float currentHealth;
 
-    public float Health 
-    { 
-        get => currentHealth; 
-        set 
-        { 
-            currentHealth = value;
-            if (currentHealth > MaxHealth)
-                currentHealth = MaxHealth;
+        public float MaxHealth
+        {
+            get => 50;
+            set { return; }
+        }
 
-            if (currentHealth <= 0)
+        public float Health
+        {
+            get => currentHealth;
+            set
             {
-                currentHealth = 0;
-                SetDeath();
+                currentHealth = value;
+                if (currentHealth > MaxHealth)
+                    currentHealth = MaxHealth;
+
+                if (currentHealth <= 0)
+                {
+                    currentHealth = 0;
+                    SetDeath();
+                }
             }
-        } 
-    }
+        }
 
-    public CharacterLiveComponent()
-    {
-        Health = MaxHealth;
-    }
+        public CharacterLiveComponent()
+        {
+            Health = MaxHealth;
+        }
 
-    public void SetDamage(float damage)
-    {
-        Health -= damage;
-        Debug.Log("Get damage = " + damage);
-    }
+        public void SetDamage(float damage)
+        {
+            Health -= damage;
+            Debug.Log("Get damage = " + damage);
+        }
 
-    public void SetDeath()
-    {
-        Debug.Log("Death!");
+        public void SetDeath()
+        {
+            Debug.Log("Death!");
+        }
     }
 }

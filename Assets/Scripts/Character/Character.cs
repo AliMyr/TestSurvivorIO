@@ -1,21 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Character.Components.Damage;
+using Character.Components.Live;
+using Character.Components.Movement;
 
-public abstract class Character : MonoBehaviour
+namespace Character
 {
-    [SerializeField] 
-    public CharacterData characterData;
-
-    public IMovable MovableComponent { get; protected set; }
-    public ILiveComponent LiveComponent { get; protected set; }
-    public IDamageComponent DamageComponent { get; protected set; }
-
-    public virtual void Start()
+    public abstract class Character : MonoBehaviour
     {
-        MovableComponent = new CharacterMovementComponent();
-        MovableComponent.Initialize(characterData);
-    }
+        [SerializeField]
+        public CharacterData characterData;
 
-    public abstract void Update();
+        public IMovable MovableComponent { get; set; }
+        public ILiveComponent LiveComponent { get; set; }
+        public IDamageComponent DamageComponent { get; set; }
+
+        public virtual void Start()
+        {
+            MovableComponent = new CharacterMovementComponent();
+            MovableComponent.Initialize(characterData);
+        }
+
+        public abstract void Update();
+    }
 }

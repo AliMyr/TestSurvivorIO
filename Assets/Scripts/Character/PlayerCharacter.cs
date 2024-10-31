@@ -1,24 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Character.Components.Live;
+using Character.Components.Movement;
 
-public class PlayerCharacter : Character
+namespace Character
 {
-    public override void Start()
+    public class PlayerCharacter : Character
     {
-        base.Start();
+        private ICharacterInput characterInput = new PlayerInput();
 
-        LiveComponent = new CharacterLiveComponent();
-    }
+        public override void Start()
+        {
+            base.Start();
+            LiveComponent = new CharacterLiveComponent();
+        }
 
-    public override void Update()
-    {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        public override void Update()
+        {
+            Vector3 movementVector = characterInput.GetMovementInput().normalized;
 
-        Vector3 movementVector = new Vector3(moveHorizontal, 0, moveVertical).normalized;
-
-        MovableComponent.Move(movementVector);
-        MovableComponent.Rotation(movementVector);
+            MovableComponent.Move(movementVector);
+            MovableComponent.Rotation(movementVector);
+        }
     }
 }
